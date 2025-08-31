@@ -27,12 +27,7 @@ function DashboardMainView({
       <div className="absolute bottom-20 right-20 w-40 h-40 bg-gradient-to-br from-purple-400/20 to-pink-600/20 rounded-full blur-xl animate-pulse delay-1000"></div>
       <div className="absolute top-1/2 left-1/3 w-24 h-24 bg-gradient-to-br from-emerald-400/20 to-teal-600/20 rounded-full blur-xl animate-pulse delay-500"></div>
 
-      {/* TopBar - Full Width */}
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <TopBar onMenuClick={toggleSidebar} onNavigate={onNavigate} />
-      </div>
-
-      <div className="flex pt-16 h-screen relative">
+      <div className="flex h-screen relative">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block w-64 flex-shrink-0">
           <Sidebar isOpen={true} onClose={() => {}} onNavigate={onNavigate} currentView="dashboard" />
@@ -45,14 +40,18 @@ function DashboardMainView({
               className="fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm"
               onClick={toggleSidebar}
             />
-            <div className="fixed left-0 top-16 h-[calc(100vh-4rem)] z-50 lg:hidden">
+            <div className="fixed left-0 top-0 h-full z-50 lg:hidden">
               <Sidebar isOpen={isSidebarOpen} onClose={toggleSidebar} onNavigate={onNavigate} currentView="dashboard" />
             </div>
           </>
         )}
 
-        {/* Main Content Area */}
-        <div className="flex-1 min-w-0 relative">
+        {/* Main Content Area - Full Width */}
+        <div className="flex-1 min-w-0 relative flex flex-col">
+          {/* TopBar - Full Width */}
+          <TopBar onMenuClick={toggleSidebar} onNavigate={onNavigate} />
+          
+          {/* Main Content */}
           <MainContent onNavigate={onNavigate} onShowDetail={onShowDetail} />
         </div>
       </div>

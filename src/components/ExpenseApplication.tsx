@@ -243,12 +243,20 @@ function ExpenseApplication({ onNavigate }: ExpenseApplicationProps) {
           </>
         )}
 
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 w-full">
           <TopBar onMenuClick={toggleSidebar} onNavigate={onNavigate} />
           
-          <div className="flex-1 overflow-auto p-4 lg:p-6 relative z-10">
+          <div className="flex-1 overflow-auto p-4 lg:p-8 relative z-10">
             <div className="max-w-6xl mx-auto">
-              <h1 className="text-2xl lg:text-3xl font-bold text-slate-800 mb-8">経費申請</h1>
+              <div className="relative mb-12">
+                <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent tracking-tight">
+                  経費申請
+                </h1>
+                <div className="absolute inset-0 text-3xl lg:text-4xl xl:text-5xl font-black text-slate-200/20 blur-sm -z-10">
+                  経費申請
+                </div>
+                <p className="text-slate-600 text-lg mt-3">経費項目を入力して申請を作成してください</p>
+              </div>
               
               <form onSubmit={handleSubmit} className="space-y-6">
 

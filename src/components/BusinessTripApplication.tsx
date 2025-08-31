@@ -316,15 +316,27 @@ function BusinessTripApplication({ onNavigate }: BusinessTripApplicationProps) {
         )}
 
         {/* Main Content Area */}
-        <div className="flex-1 flex flex-col min-w-0">
+        <div className="flex-1 flex flex-col min-w-0 w-full">
           <TopBar onMenuClick={toggleSidebar} onNavigate={onNavigate} />
           
-          <div className="flex-1 overflow-auto p-4 lg:p-6 relative z-10">
+          <div className="flex-1 overflow-auto p-4 lg:p-8 relative z-10">
             <div className="max-w-4xl mx-auto">
-              <h1 className="text-2xl lg:text-3xl font-bold text-slate-800 mb-8">出張申請</h1>
+              <div className="relative mb-12">
+                <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-clip-text text-transparent tracking-tight">
+                  出張申請
+                </h1>
+                <div className="absolute inset-0 text-3xl lg:text-4xl xl:text-5xl font-black text-slate-200/20 blur-sm -z-10">
+                  出張申請
+                </div>
+                <p className="text-slate-600 text-lg mt-3">新しい出張申請を作成してください</p>
+              </div>
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* 基本情報 */}
-                <div className="backdrop-blur-xl bg-white/20 rounded-xl p-6 border border-white/30 shadow-xl">
+                <div className="backdrop-blur-xl bg-gradient-to-br from-white/30 via-white/20 to-white/30 rounded-2xl p-8 border border-white/40 shadow-2xl hover:shadow-3xl transition-all duration-300 relative overflow-hidden">
+                  {/* Enhanced glass effect */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-white/20 to-white/40 backdrop-blur-xl"></div>
+                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-navy-400 via-blue-500 to-indigo-600"></div>
+                  
                   <h2 className="text-xl font-semibold text-slate-800 mb-4">基本情報</h2>
                   
                   <div className="space-y-4">
