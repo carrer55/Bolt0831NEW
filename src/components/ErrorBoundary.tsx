@@ -22,6 +22,15 @@ class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Error caught by boundary:', error, errorInfo);
+    
+    // エラーを詳細にログ出力（外部サービスへの送信は削除）
+    console.error('Component stack:', errorInfo.componentStack);
+    console.error('Error details:', {
+      message: error.message,
+      stack: error.stack,
+      name: error.name
+    });
+    
     this.setState({
       error,
       errorInfo
@@ -29,11 +38,21 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   private handleReset = () => {
+    try {
     this.setState({ hasError: false, error: undefined, errorInfo: undefined });
+    } catch (error) {
+      console.error('Error boundary reset failed:', error);
+      // 強制的にページをリロード
+      window.location.reload();
+    }
   };
 
   private handleReload = () => {
+    try {
     window.location.reload();
+    } catch (error) {
+      console.error('Page reload failed:', error);
+    }
   };
 
   public render() {

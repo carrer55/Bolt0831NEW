@@ -7,9 +7,11 @@ import './index.css';
 function App() {
   return (
     <ErrorBoundary>
-      <UserProfileProvider>
-        <AuthWrapper />
-      </UserProfileProvider>
+      <div className="min-h-screen">
+        <UserProfileProvider>
+          <AuthWrapper />
+        </UserProfileProvider>
+      </div>
     </ErrorBoundary>
   );
 }
