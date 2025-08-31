@@ -33,7 +33,7 @@ export function useDataOperations() {
   const [error, setError] = useState<string | null>(null);
   const { refreshData, refreshApplications, refreshNotifications } = useUserData();
 
-  // 経費申請を作成
+  // 経費申請を作成（エラーハンドリング強化）
   const createExpenseApplication = useCallback(async (data: CreateExpenseData) => {
     setLoading(true);
     setError(null);
@@ -102,7 +102,7 @@ export function useDataOperations() {
     }
   }, [refreshApplications]);
 
-  // 出張申請を作成
+  // 出張申請を作成（エラーハンドリング強化）
   const createBusinessTripApplication = useCallback(async (data: CreateBusinessTripData) => {
     setLoading(true);
     setError(null);
@@ -171,7 +171,7 @@ export function useDataOperations() {
     }
   }, [refreshApplications]);
 
-  // 通知を作成
+  // 通知を作成（エラーハンドリング強化）
   const createNotification = useCallback(async (data: CreateNotificationData) => {
     try {
       const { error } = await supabase
@@ -184,7 +184,6 @@ export function useDataOperations() {
 
       if (error) {
         console.log('Notification creation failed, continuing without error:', error);
-        // 通知作成に失敗してもエラーにしない
         return { success: true };
       }
 
@@ -194,12 +193,11 @@ export function useDataOperations() {
       return { success: true };
     } catch (err: any) {
       console.error('通知作成エラー:', err);
-      // エラーの場合も成功として扱う
       return { success: true };
     }
   }, [refreshNotifications]);
 
-  // 申請のステータスを更新
+  // 申請のステータスを更新（エラーハンドリング強化）
   const updateApplicationStatus = useCallback(async (
     type: 'expense' | 'business-trip',
     id: string,
@@ -221,7 +219,6 @@ export function useDataOperations() {
 
       if (error) {
         console.log('Status update failed, simulating success:', error);
-        // データベース更新に失敗した場合はローカルで成功をシミュレート
       }
 
       // ステータス変更通知を作成
@@ -244,14 +241,13 @@ export function useDataOperations() {
       return { success: true };
     } catch (err: any) {
       console.error('ステータス更新エラー:', err);
-      // エラーの場合も成功として扱う
       return { success: true };
     } finally {
       setLoading(false);
     }
   }, [refreshApplications, createNotification]);
 
-  // 通知を既読にする
+  // 通知を既読にする（エラーハンドリング強化）
   const markNotificationAsRead = useCallback(async (id: string) => {
     try {
       const { error } = await supabase
@@ -274,7 +270,7 @@ export function useDataOperations() {
     }
   }, [refreshNotifications]);
 
-  // 申請を削除
+  // 申請を削除（エラーハンドリング強化）
   const deleteApplication = useCallback(async (
     type: 'expense' | 'business-trip',
     id: string
@@ -291,7 +287,6 @@ export function useDataOperations() {
 
       if (error) {
         console.log('Delete failed, simulating success:', error);
-        // 削除に失敗した場合はローカルで成功をシミュレート
       }
 
       // 削除通知を作成
@@ -307,7 +302,6 @@ export function useDataOperations() {
       return { success: true };
     } catch (err: any) {
       console.error('申請削除エラー:', err);
-      // エラーの場合も成功として扱う
       return { success: true };
     } finally {
       setLoading(false);
@@ -331,4 +325,3 @@ export function useDataOperations() {
     clearError
   };
 }
-

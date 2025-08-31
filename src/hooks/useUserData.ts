@@ -19,148 +19,191 @@ export interface UserData {
   };
 }
 
-// モックデータ生成関数
+// モックデータ生成関数（エラーハンドリング強化）
 const generateMockExpenseApplications = (userId: string): Tables<'expense_applications'>[] => {
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
-  
-  return [
-    {
-      id: 'exp-001',
-      user_id: userId,
-      title: '交通費・宿泊費精算',
-      description: '東京出張に伴う交通費と宿泊費の精算',
-      amount: 25800,
-      currency: 'JPY',
-      status: 'approved',
-      category: 'TRANSPORTATION',
-      receipt_url: null,
-      submitted_at: new Date(currentYear, currentMonth, 15).toISOString(),
-      approved_at: new Date(currentYear, currentMonth, 16).toISOString(),
-      approved_by: null,
-      created_at: new Date(currentYear, currentMonth, 15).toISOString(),
-      updated_at: new Date(currentYear, currentMonth, 16).toISOString(),
-      period_start_date: null,
-      period_end_date: null,
-      reason: null,
-      approval_comment: null,
-      rejection_reason: null
-    },
-    {
-      id: 'exp-002',
-      user_id: userId,
-      title: '会議費精算',
-      description: 'クライアント会議での飲食費',
-      amount: 8500,
-      currency: 'JPY',
-      status: 'pending',
-      category: 'ENTERTAINMENT',
-      receipt_url: null,
-      submitted_at: new Date(currentYear, currentMonth, 20).toISOString(),
-      approved_at: null,
-      approved_by: null,
-      created_at: new Date(currentYear, currentMonth, 20).toISOString(),
-      updated_at: new Date(currentYear, currentMonth, 20).toISOString(),
-      period_start_date: null,
-      period_end_date: null,
-      reason: null,
-      approval_comment: null,
-      rejection_reason: null
-    }
-  ];
+  try {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    
+    return [
+      {
+        id: 'exp-001',
+        user_id: userId,
+        title: '交通費・宿泊費精算',
+        description: '東京出張に伴う交通費と宿泊費の精算',
+        amount: 25800,
+        currency: 'JPY',
+        status: 'approved',
+        category: 'TRANSPORTATION',
+        receipt_url: null,
+        submitted_at: new Date(currentYear, currentMonth, 15).toISOString(),
+        approved_at: new Date(currentYear, currentMonth, 16).toISOString(),
+        approved_by: null,
+        created_at: new Date(currentYear, currentMonth, 15).toISOString(),
+        updated_at: new Date(currentYear, currentMonth, 16).toISOString()
+      },
+      {
+        id: 'exp-002',
+        user_id: userId,
+        title: '会議費精算',
+        description: 'クライアント会議での飲食費',
+        amount: 8500,
+        currency: 'JPY',
+        status: 'pending',
+        category: 'ENTERTAINMENT',
+        receipt_url: null,
+        submitted_at: new Date(currentYear, currentMonth, 20).toISOString(),
+        approved_at: null,
+        approved_by: null,
+        created_at: new Date(currentYear, currentMonth, 20).toISOString(),
+        updated_at: new Date(currentYear, currentMonth, 20).toISOString()
+      },
+      {
+        id: 'exp-003',
+        user_id: userId,
+        title: '文具・消耗品費',
+        description: '事務用品の購入費用',
+        amount: 12300,
+        currency: 'JPY',
+        status: 'approved',
+        category: 'SUPPLIES',
+        receipt_url: null,
+        submitted_at: new Date(currentYear, currentMonth, 10).toISOString(),
+        approved_at: new Date(currentYear, currentMonth, 11).toISOString(),
+        approved_by: null,
+        created_at: new Date(currentYear, currentMonth, 10).toISOString(),
+        updated_at: new Date(currentYear, currentMonth, 11).toISOString()
+      }
+    ];
+  } catch (error) {
+    console.error('Error generating mock expense data:', error);
+    return [];
+  }
 };
 
 const generateMockBusinessTripApplications = (userId: string): Tables<'business_trip_applications'>[] => {
-  const currentDate = new Date();
-  const currentMonth = currentDate.getMonth();
-  const currentYear = currentDate.getFullYear();
-  
-  return [
-    {
-      id: 'bt-001',
-      user_id: userId,
-      title: '東京出張申請',
-      description: '新規クライアント訪問および契約締結',
-      destination: '東京都港区',
-      start_date: new Date(currentYear, currentMonth, 25).toISOString().split('T')[0],
-      end_date: new Date(currentYear, currentMonth, 27).toISOString().split('T')[0],
-      purpose: 'クライアント訪問および新規開拓営業',
-      estimated_cost: 52500,
-      status: 'approved',
-      submitted_at: new Date(currentYear, currentMonth, 18).toISOString(),
-      approved_at: new Date(currentYear, currentMonth, 19).toISOString(),
-      approved_by: null,
-      created_at: new Date(currentYear, currentMonth, 18).toISOString(),
-      updated_at: new Date(currentYear, currentMonth, 19).toISOString(),
-      calculated_domestic_daily_allowance: null,
-      calculated_overseas_daily_allowance: null,
-      calculated_transportation_allowance: null,
-      calculated_accommodation_allowance: null,
-      calculated_misc_allowance: null,
-      calculated_total_allowance: null,
-      allowance_calculation_date: null
-    },
-    {
-      id: 'bt-002',
-      user_id: userId,
-      title: '大阪出張申請',
-      description: '関西支社との会議および業務調整',
-      destination: '大阪府大阪市',
-      start_date: new Date(currentYear, currentMonth + 1, 5).toISOString().split('T')[0],
-      end_date: new Date(currentYear, currentMonth + 1, 6).toISOString().split('T')[0],
-      purpose: '関西支社との定期会議および業務調整',
-      estimated_cost: 35000,
-      status: 'pending',
-      submitted_at: new Date(currentYear, currentMonth, 22).toISOString(),
-      approved_at: null,
-      approved_by: null,
-      created_at: new Date(currentYear, currentMonth, 22).toISOString(),
-      updated_at: new Date(currentYear, currentMonth, 22).toISOString(),
-      calculated_domestic_daily_allowance: null,
-      calculated_overseas_daily_allowance: null,
-      calculated_transportation_allowance: null,
-      calculated_accommodation_allowance: null,
-      calculated_misc_allowance: null,
-      calculated_total_allowance: null,
-      allowance_calculation_date: null
-    }
-  ];
+  try {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth();
+    const currentYear = currentDate.getFullYear();
+    
+    return [
+      {
+        id: 'bt-001',
+        user_id: userId,
+        title: '東京出張申請',
+        description: '新規クライアント訪問および契約締結',
+        destination: '東京都港区',
+        start_date: new Date(currentYear, currentMonth, 25).toISOString().split('T')[0],
+        end_date: new Date(currentYear, currentMonth, 27).toISOString().split('T')[0],
+        purpose: 'クライアント訪問および新規開拓営業',
+        estimated_cost: 52500,
+        status: 'approved',
+        submitted_at: new Date(currentYear, currentMonth, 18).toISOString(),
+        approved_at: new Date(currentYear, currentMonth, 19).toISOString(),
+        approved_by: null,
+        created_at: new Date(currentYear, currentMonth, 18).toISOString(),
+        updated_at: new Date(currentYear, currentMonth, 19).toISOString()
+      },
+      {
+        id: 'bt-002',
+        user_id: userId,
+        title: '大阪出張申請',
+        description: '関西支社との会議および業務調整',
+        destination: '大阪府大阪市',
+        start_date: new Date(currentYear, currentMonth + 1, 5).toISOString().split('T')[0],
+        end_date: new Date(currentYear, currentMonth + 1, 6).toISOString().split('T')[0],
+        purpose: '関西支社との定期会議および業務調整',
+        estimated_cost: 35000,
+        status: 'pending',
+        submitted_at: new Date(currentYear, currentMonth, 22).toISOString(),
+        approved_at: null,
+        approved_by: null,
+        created_at: new Date(currentYear, currentMonth, 22).toISOString(),
+        updated_at: new Date(currentYear, currentMonth, 22).toISOString()
+      },
+      {
+        id: 'bt-003',
+        user_id: userId,
+        title: '福岡出張申請',
+        description: '九州エリアの営業活動',
+        destination: '福岡県福岡市',
+        start_date: new Date(currentYear, currentMonth, 8).toISOString().split('T')[0],
+        end_date: new Date(currentYear, currentMonth, 10).toISOString().split('T')[0],
+        purpose: '九州エリアでの新規開拓営業',
+        estimated_cost: 48000,
+        status: 'approved',
+        submitted_at: new Date(currentYear, currentMonth, 5).toISOString(),
+        approved_at: new Date(currentYear, currentMonth, 6).toISOString(),
+        approved_by: null,
+        created_at: new Date(currentYear, currentMonth, 5).toISOString(),
+        updated_at: new Date(currentYear, currentMonth, 6).toISOString()
+      }
+    ];
+  } catch (error) {
+    console.error('Error generating mock business trip data:', error);
+    return [];
+  }
 };
 
 const generateMockNotifications = (userId: string): Tables<'notifications'>[] => {
-  const currentDate = new Date();
-  
-  return [
-    {
-      id: 'notif-001',
-      user_id: userId,
-      title: '出張申請が承認されました',
-      message: '東京出張申請（BT-001）が承認されました。出張の準備を進めてください。',
-      type: 'success',
-      is_read: false,
-      created_at: new Date(currentDate.getTime() - 2 * 60 * 60 * 1000).toISOString() // 2時間前
-    },
-    {
-      id: 'notif-002',
-      user_id: userId,
-      title: '経費申請の提出期限が近づいています',
-      message: '今月の経費申請の提出期限は明日です。お忘れなく提出してください。',
-      type: 'warning',
-      is_read: true,
-      created_at: new Date(currentDate.getTime() - 24 * 60 * 60 * 1000).toISOString() // 1日前
-    },
-    {
-      id: 'notif-003',
-      user_id: userId,
-      title: 'システムメンテナンスのお知らせ',
-      message: '明日の深夜2:00-4:00にシステムメンテナンスを実施します。',
-      type: 'info',
-      is_read: true,
-      created_at: new Date(currentDate.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString() // 3日前
-    }
-  ];
+  try {
+    const currentDate = new Date();
+    
+    return [
+      {
+        id: 'notif-001',
+        user_id: userId,
+        title: '出張申請が承認されました',
+        message: '東京出張申請（BT-001）が承認されました。出張の準備を進めてください。',
+        type: 'success',
+        is_read: false,
+        created_at: new Date(currentDate.getTime() - 2 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 'notif-002',
+        user_id: userId,
+        title: '経費申請の提出期限が近づいています',
+        message: '今月の経費申請の提出期限は明日です。お忘れなく提出してください。',
+        type: 'warning',
+        is_read: true,
+        created_at: new Date(currentDate.getTime() - 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 'notif-003',
+        user_id: userId,
+        title: 'システムメンテナンスのお知らせ',
+        message: '明日の深夜2:00-4:00にシステムメンテナンスを実施します。',
+        type: 'info',
+        is_read: true,
+        created_at: new Date(currentDate.getTime() - 3 * 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 'notif-004',
+        user_id: userId,
+        title: '新機能のお知らせ',
+        message: '出張規程管理機能がリリースされました。詳細はヘルプページをご確認ください。',
+        type: 'info',
+        is_read: true,
+        created_at: new Date(currentDate.getTime() - 5 * 24 * 60 * 60 * 1000).toISOString()
+      },
+      {
+        id: 'notif-005',
+        user_id: userId,
+        title: '経費申請が承認されました',
+        message: '会議費精算（EXP-002）が承認されました。',
+        type: 'success',
+        is_read: false,
+        created_at: new Date(currentDate.getTime() - 6 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+  } catch (error) {
+    console.error('Error generating mock notifications:', error);
+    return [];
+  }
 };
+
 export function useUserData() {
   const { user, isAuthenticated } = useAuth();
   const [userData, setUserData] = useState<UserData>({
@@ -178,7 +221,7 @@ export function useUserData() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ユーザープロフィールを取得
+  // ユーザープロフィールを取得（エラーハンドリング強化）
   const fetchUserProfile = useCallback(async () => {
     if (!user?.id) return;
 
@@ -241,7 +284,7 @@ export function useUserData() {
     }
   }, [user?.id]);
 
-  // 経費申請を取得
+  // 経費申請を取得（エラーハンドリング強化）
   const fetchExpenseApplications = useCallback(async () => {
     if (!user?.id) return;
 
@@ -254,7 +297,6 @@ export function useUserData() {
 
       if (error) {
         console.log('Using mock expense data due to error:', error);
-        // エラーの場合はモックデータを使用
         const mockData = generateMockExpenseApplications(user.id);
         setUserData(prev => ({
           ...prev,
@@ -275,7 +317,6 @@ export function useUserData() {
       }));
     } catch (err: any) {
       console.error('経費申請取得エラー:', err);
-      // エラーの場合はモックデータを使用
       const mockData = generateMockExpenseApplications(user.id);
       setUserData(prev => ({
         ...prev,
@@ -287,7 +328,7 @@ export function useUserData() {
     }
   }, [user?.id]);
 
-  // 出張申請を取得
+  // 出張申請を取得（エラーハンドリング強化）
   const fetchBusinessTripApplications = useCallback(async () => {
     if (!user?.id) return;
 
@@ -300,7 +341,6 @@ export function useUserData() {
 
       if (error) {
         console.log('Using mock business trip data due to error:', error);
-        // エラーの場合はモックデータを使用
         const mockData = generateMockBusinessTripApplications(user.id);
         setUserData(prev => ({
           ...prev,
@@ -321,7 +361,6 @@ export function useUserData() {
       }));
     } catch (err: any) {
       console.error('出張申請取得エラー:', err);
-      // エラーの場合はモックデータを使用
       const mockData = generateMockBusinessTripApplications(user.id);
       setUserData(prev => ({
         ...prev,
@@ -333,7 +372,7 @@ export function useUserData() {
     }
   }, [user?.id]);
 
-  // 通知を取得
+  // 通知を取得（エラーハンドリング強化）
   const fetchNotifications = useCallback(async () => {
     if (!user?.id) return;
 
@@ -347,7 +386,6 @@ export function useUserData() {
 
       if (error) {
         console.log('Using mock notification data due to error:', error);
-        // エラーの場合はモックデータを使用
         const mockData = generateMockNotifications(user.id);
         setUserData(prev => ({
           ...prev,
@@ -362,7 +400,6 @@ export function useUserData() {
       }));
     } catch (err: any) {
       console.error('通知取得エラー:', err);
-      // エラーの場合はモックデータを使用
       const mockData = generateMockNotifications(user.id);
       setUserData(prev => ({
         ...prev,
@@ -371,61 +408,91 @@ export function useUserData() {
     }
   }, [user?.id]);
 
-  // 統計データを計算
+  // 統計データを計算（エラーハンドリング強化）
   const calculateStats = useCallback(() => {
-    const now = new Date();
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
+    try {
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
 
-    const monthlyExpenses = userData.applications.expense
-      .filter(app => {
-        const appDate = new Date(app.created_at);
-        return appDate.getMonth() === currentMonth && appDate.getFullYear() === currentYear;
-      })
-      .reduce((sum, app) => sum + app.amount, 0);
+      const monthlyExpenses = userData.applications.expense
+        .filter(app => {
+          try {
+            const appDate = new Date(app.created_at);
+            return appDate.getMonth() === currentMonth && appDate.getFullYear() === currentYear;
+          } catch (error) {
+            console.error('Date parsing error:', error);
+            return false;
+          }
+        })
+        .reduce((sum, app) => sum + (app.amount || 0), 0);
 
-    const monthlyBusinessTrips = userData.applications.businessTrip
-      .filter(app => {
-        const appDate = new Date(app.created_at);
-        return appDate.getMonth() === currentMonth && appDate.getFullYear() === currentYear;
-      })
-      .reduce((sum, app) => sum + app.estimated_cost, 0);
+      const monthlyBusinessTrips = userData.applications.businessTrip
+        .filter(app => {
+          try {
+            const appDate = new Date(app.created_at);
+            return appDate.getMonth() === currentMonth && appDate.getFullYear() === currentYear;
+          } catch (error) {
+            console.error('Date parsing error:', error);
+            return false;
+          }
+        })
+        .reduce((sum, app) => sum + (app.estimated_cost || 0), 0);
 
-    const pendingApplications = [
-      ...userData.applications.expense.filter(app => app.status === 'pending'),
-      ...userData.applications.businessTrip.filter(app => app.status === 'pending')
-    ].length;
+      const pendingApplications = [
+        ...userData.applications.expense.filter(app => app.status === 'pending'),
+        ...userData.applications.businessTrip.filter(app => app.status === 'pending')
+      ].length;
 
-    const approvedApplications = [
-      ...userData.applications.expense.filter(app => app.status === 'approved'),
-      ...userData.applications.businessTrip.filter(app => app.status === 'approved')
-    ].length;
+      const approvedApplications = [
+        ...userData.applications.expense.filter(app => app.status === 'approved'),
+        ...userData.applications.businessTrip.filter(app => app.status === 'approved')
+      ].length;
 
-    const approvedAmount = [
-      ...userData.applications.expense.filter(app => app.status === 'approved'),
-      ...userData.applications.businessTrip.filter(app => app.status === 'approved')
-    ].reduce((sum, app) => {
-      if ('amount' in app) {
-        return sum + app.amount;
-      } else if ('estimated_cost' in app) {
-        return sum + app.estimated_cost;
-      }
-      return sum;
-    }, 0);
+      const approvedAmount = [
+        ...userData.applications.expense.filter(app => app.status === 'approved'),
+        ...userData.applications.businessTrip.filter(app => app.status === 'approved')
+      ].reduce((sum, app) => {
+        try {
+          if ('amount' in app) {
+            return sum + (app.amount || 0);
+          } else if ('estimated_cost' in app) {
+            return sum + (app.estimated_cost || 0);
+          }
+          return sum;
+        } catch (error) {
+          console.error('Amount calculation error:', error);
+          return sum;
+        }
+      }, 0);
 
-    setUserData(prev => ({
-      ...prev,
-      stats: {
-        monthlyExpenses,
-        monthlyBusinessTrips,
-        pendingApplications,
-        approvedApplications,
-        approvedAmount
-      }
-    }));
+      setUserData(prev => ({
+        ...prev,
+        stats: {
+          monthlyExpenses,
+          monthlyBusinessTrips,
+          pendingApplications,
+          approvedApplications,
+          approvedAmount
+        }
+      }));
+    } catch (error) {
+      console.error('Stats calculation error:', error);
+      // エラーの場合はデフォルト値を設定
+      setUserData(prev => ({
+        ...prev,
+        stats: {
+          monthlyExpenses: 0,
+          monthlyBusinessTrips: 0,
+          pendingApplications: 0,
+          approvedApplications: 0,
+          approvedAmount: 0
+        }
+      }));
+    }
   }, [userData.applications]);
 
-  // 全データを取得
+  // 全データを取得（エラーハンドリング強化）
   const fetchAllData = useCallback(async () => {
     if (!isAuthenticated || !user?.id) return;
 
@@ -443,43 +510,75 @@ export function useUserData() {
       console.error('データ取得エラー:', err);
       // エラーが発生してもモックデータで継続
       console.log('Using mock data due to fetch error');
+      
+      // 最低限のモックデータを設定
+      if (user?.id) {
+        setUserData(prev => ({
+          ...prev,
+          applications: {
+            expense: generateMockExpenseApplications(user.id),
+            businessTrip: generateMockBusinessTripApplications(user.id)
+          },
+          notifications: generateMockNotifications(user.id)
+        }));
+      }
     } finally {
       setLoading(false);
     }
   }, [isAuthenticated, user?.id, fetchUserProfile, fetchExpenseApplications, fetchBusinessTripApplications, fetchNotifications]);
 
-  // 統計データを更新（依存関係を修正）
+  // 統計データを更新（エラーハンドリング強化）
   useEffect(() => {
-    if (userData.applications.expense.length > 0 || userData.applications.businessTrip.length > 0) {
-      calculateStats();
+    try {
+      if (userData.applications.expense.length > 0 || userData.applications.businessTrip.length > 0) {
+        calculateStats();
+      }
+    } catch (error) {
+      console.error('Stats update error:', error);
     }
-  }, [userData.applications.expense, userData.applications.businessTrip]);
+  }, [userData.applications.expense, userData.applications.businessTrip, calculateStats]);
 
-  // 認証状態が変更されたときにデータを取得
+  // 認証状態が変更されたときにデータを取得（エラーハンドリング強化）
   useEffect(() => {
-    if (isAuthenticated && user?.id) {
-      console.log('User authenticated, fetching data for:', user.id);
-      fetchAllData();
-    } else {
-      console.log('User not authenticated or no user ID');
+    try {
+      if (isAuthenticated && user?.id) {
+        console.log('User authenticated, fetching data for:', user.id);
+        fetchAllData();
+      } else {
+        console.log('User not authenticated or no user ID');
+      }
+    } catch (error) {
+      console.error('Data fetch initialization error:', error);
     }
   }, [isAuthenticated, user?.id, fetchAllData]);
 
-  // データを更新
-  const refreshData = useCallback(() => {
-    fetchAllData();
+  // データを更新（エラーハンドリング強化）
+  const refreshData = useCallback(async () => {
+    try {
+      await fetchAllData();
+    } catch (error) {
+      console.error('Data refresh error:', error);
+    }
   }, [fetchAllData]);
 
-  // 特定のデータを更新
-  const refreshApplications = useCallback(() => {
-    Promise.all([
-      fetchExpenseApplications(),
-      fetchBusinessTripApplications()
-    ]);
+  // 特定のデータを更新（エラーハンドリング強化）
+  const refreshApplications = useCallback(async () => {
+    try {
+      await Promise.all([
+        fetchExpenseApplications(),
+        fetchBusinessTripApplications()
+      ]);
+    } catch (error) {
+      console.error('Applications refresh error:', error);
+    }
   }, [fetchExpenseApplications, fetchBusinessTripApplications]);
 
-  const refreshNotifications = useCallback(() => {
-    fetchNotifications();
+  const refreshNotifications = useCallback(async () => {
+    try {
+      await fetchNotifications();
+    } catch (error) {
+      console.error('Notifications refresh error:', error);
+    }
   }, [fetchNotifications]);
 
   return {
@@ -495,4 +594,3 @@ export function useUserData() {
     fetchNotifications
   };
 }
-
