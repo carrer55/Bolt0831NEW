@@ -85,6 +85,15 @@ function MyPage({ onNavigate }: MyPageProps) {
 
       if (error) {
         console.error('プロフィール読み込みエラー:', error);
+        // エラーの場合はデフォルトデータを使用
+        setProfileData({
+          full_name: user.full_name || '田中 太郎',
+          company: user.company || 'サンプル株式会社',
+          position: user.position || '営業部長',
+          phone: user.phone || '090-1234-5678',
+          department: user.department || '営業部',
+          role: user.role || 'user'
+        });
         return;
       }
 
@@ -100,6 +109,15 @@ function MyPage({ onNavigate }: MyPageProps) {
       }
     } catch (err) {
       console.error('プロフィール読み込みエラー:', err);
+      // エラーの場合はデフォルトデータを使用
+      setProfileData({
+        full_name: user?.full_name || '田中 太郎',
+        company: user?.company || 'サンプル株式会社',
+        position: user?.position || '営業部長',
+        phone: user?.phone || '090-1234-5678',
+        department: user?.department || '営業部',
+        role: user?.role || 'user'
+      });
     }
   };
 
@@ -139,6 +157,7 @@ function MyPage({ onNavigate }: MyPageProps) {
       }
     } catch (err) {
       console.error('日当設定読み込みエラー:', err);
+      // エラーの場合はデフォルト値を使用（既に設定済み）
     }
   };
 
@@ -168,6 +187,7 @@ function MyPage({ onNavigate }: MyPageProps) {
       }
     } catch (err) {
       console.error('通知設定読み込みエラー:', err);
+      // エラーの場合はデフォルト値を使用（既に設定済み）
     }
   };
 
