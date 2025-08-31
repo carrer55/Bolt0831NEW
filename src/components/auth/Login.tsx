@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, LogIn, UserPlus, RotateCcw } from 'lucide-react';
-import { supabaseAuth } from '../../lib/supabaseAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 interface LoginProps {
   onNavigate: (view: string) => void;
@@ -8,11 +8,11 @@ interface LoginProps {
 }
 
 function Login({ onNavigate, onLoginSuccess }: LoginProps) {
+  const { login, isLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,9 +23,9 @@ function Login({ onNavigate, onLoginSuccess }: LoginProps) {
       return;
     }
 
-    setLoading(true);
+    setError('');
     try {
-      const result = await supabaseAuth.login(email, password);
+      const result = await login(email, password);
       if (result.success) {
         onLoginSuccess();
       } else {
@@ -33,8 +33,6 @@ function Login({ onNavigate, onLoginSuccess }: LoginProps) {
       }
     } catch (error) {
       setError('ログインに失敗しました');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -118,11 +116,11 @@ function Login({ onNavigate, onLoginSuccess }: LoginProps) {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isLoading}
                 className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-navy-600 to-navy-800 hover:from-navy-700 hover:to-navy-900 text-white rounded-lg font-medium shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <LogIn className="w-5 h-5" />
-                <span>{loading ? 'ログイン中...' : 'ログイン'}</span>
+                <span>{isLoading ? 'ログイン中...' : 'ログイン'}</span>
               </button>
             </form>
 

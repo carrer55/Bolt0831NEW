@@ -13,7 +13,7 @@ import {
   Users
 } from 'lucide-react';
 import { useUserData } from '../hooks/useUserData';
-import { supabaseAuth } from '../lib/supabaseAuth';
+import { useAuth } from '../hooks/useAuth';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -23,10 +23,12 @@ interface SidebarProps {
 }
 
 function Sidebar({ isOpen, onClose, onNavigate, currentView = 'dashboard' }: SidebarProps) {
+  const { logout } = useAuth();
   const { userData } = useUserData();
+  
   const handleLogout = async () => {
     try {
-      await supabaseAuth.logout();
+      await logout();
       // ログアウト後の処理は必要に応じて追加
     } catch (error) {
       console.error('ログアウトエラー:', error);

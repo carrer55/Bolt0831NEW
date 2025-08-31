@@ -1,6 +1,7 @@
 import { supabase } from './supabase'
 import type { User } from '@supabase/supabase-js'
 import type { Tables } from '../types/supabase'
+import { useAuth } from '../hooks/useAuth'
 
 export interface AuthUser {
   id: string
@@ -18,6 +19,11 @@ export interface AuthState {
   user: AuthUser | null
   isAuthenticated: boolean
   isOnboardingComplete: boolean
+}
+
+// 新しいuseAuthフックを使用するためのラッパー
+export const useSupabaseAuth = () => {
+  return useAuth()
 }
 
 class SupabaseAuth {
@@ -283,7 +289,9 @@ class SupabaseAuth {
             phone: userData.phone,
             department: userData.department,
             role: 'user',
-            avatar_url: null
+            avatar_url: null,
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString()
           })
 
         if (profileError) {
@@ -328,7 +336,10 @@ class SupabaseAuth {
       const { data, error } = await supabase
         .from('profiles')
         .update({
-          full_name: updates.name || currentUser.name,
+          full_name: updates.full_name || currentUser.name,
+          company: updates.company || currentUser.company,
+          position: updates.position || currentUser.position,
+          phone: updates.phone || currentUser.phone,
           role: updates.role || currentUser.role,
           department: updates.department || currentUser.department,
           avatar_url: updates.avatar_url || currentUser.avatar_url,
@@ -345,7 +356,13 @@ class SupabaseAuth {
       // ローカル状態を更新
       const updatedUser = {
         ...currentUser,
-        ...updates
+        name: data.full_name || currentUser.name,
+        company: data.company || currentUser.company,
+        position: data.position || currentUser.position,
+        phone: data.phone || currentUser.phone,
+        role: data.role || currentUser.role,
+        department: data.department || currentUser.department,
+        avatar_url: data.avatar_url || currentUser.avatar_url
       }
 
       this.authState.user = updatedUser

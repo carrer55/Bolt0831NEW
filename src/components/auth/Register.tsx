@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, UserPlus, ArrowLeft, User, Building, Phone, Briefcase, Users } from 'lucide-react';
-import { supabaseAuth } from '../../lib/supabaseAuth';
+import { useAuth } from '../../hooks/useAuth';
 
 interface RegisterProps {
   onNavigate: (view: string) => void;
 }
 
 function Register({ onNavigate }: RegisterProps) {
+  const { register, isLoading } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -20,7 +21,6 @@ function Register({ onNavigate }: RegisterProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,9 +37,9 @@ function Register({ onNavigate }: RegisterProps) {
       return;
     }
 
-    setLoading(true);
+    setError('');
     try {
-      const result = await supabaseAuth.register({
+      const result = await register({
         email: formData.email,
         password: formData.password,
         name: formData.name,
@@ -56,8 +56,6 @@ function Register({ onNavigate }: RegisterProps) {
       }
     } catch (error) {
       setError('登録に失敗しました');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -238,11 +236,11 @@ function Register({ onNavigate }: RegisterProps) {
 
               <button
                 type="submit"
-                disabled={loading}
+                disabled={isLoading}
                 className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-800 hover:from-emerald-700 hover:to-emerald-900 text-white rounded-lg font-medium shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <UserPlus className="w-5 h-5" />
-                <span>{loading ? '登録中...' : '新規登録'}</span>
+                <span>{isLoading ? '登録中...' : '新規登録'}</span>
               </button>
             </form>
 

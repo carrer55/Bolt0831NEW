@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
-import { supabaseAuth } from '../lib/supabaseAuth';
+import { useAuth } from './useAuth';
 import type { Tables } from '../types/supabase';
 
 export interface UserData {
@@ -20,8 +20,7 @@ export interface UserData {
 }
 
 export function useUserData() {
-  const authState = supabaseAuth.getAuthState();
-  const { user, isAuthenticated } = authState;
+  const { user, isAuthenticated } = useAuth();
   const [userData, setUserData] = useState<UserData>({
     profile: null,
     applications: { expense: [], businessTrip: [] },

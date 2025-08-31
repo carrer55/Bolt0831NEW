@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Upload, Calculator, Save, Loader2, Globe } from 'lucide-react';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
-import { supabaseAuth } from '../lib/supabaseAuth';
+import { useAuth } from '../hooks/useAuth';
 
 import { supabase } from '../lib/supabase';
 import type { Tables } from '../types/supabase';
@@ -12,8 +12,7 @@ interface BusinessTripApplicationProps {
 }
 
 function BusinessTripApplication({ onNavigate }: BusinessTripApplicationProps) {
-  const authState = supabaseAuth.getAuthState();
-  const { user } = authState;
+  const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [formData, setFormData] = useState({
     purpose: '',

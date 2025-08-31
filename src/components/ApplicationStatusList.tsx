@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Search, Filter, Eye, Edit, Trash2, Clock, CheckCircle, XCircle, AlertTriangle, Loader2 } from 'lucide-react';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
-import { supabaseAuth } from '../lib/supabaseAuth';
+import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 import type { Tables } from '../types/supabase';
 
@@ -23,8 +23,7 @@ interface Application {
 }
 
 function ApplicationStatusList({ onNavigate, onShowDetail }: ApplicationStatusListProps) {
-  const authState = supabaseAuth.getAuthState();
-  const { user } = authState;
+  const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');

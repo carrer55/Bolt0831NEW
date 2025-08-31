@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Save, User, Building, Phone, Briefcase, Users, Bell, Shield, Calculator, Loader2 } from 'lucide-react';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
-import { supabaseAuth } from '../lib/supabaseAuth';
+import { useAuth } from '../hooks/useAuth';
 import { supabase } from '../lib/supabase';
 
 interface MyPageProps {
@@ -25,8 +25,7 @@ interface AllowanceSettings {
 }
 
 function MyPage({ onNavigate }: MyPageProps) {
-  const authState = supabaseAuth.getAuthState();
-  const { user } = authState;
+  const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('profile');
   const [allowanceTab, setAllowanceTab] = useState('domestic');

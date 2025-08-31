@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 import AdvancedSearch from './AdvancedSearch';
 import { supabase } from '../lib/supabase';
-import { supabaseAuth } from '../lib/supabaseAuth';
+import { useAuth } from '../hooks/useAuth';
 import type { Tables } from '../types/supabase';
 
 interface DocumentManagementProps {
@@ -26,8 +26,7 @@ interface Document {
 }
 
 function DocumentManagement({ onNavigate }: DocumentManagementProps) {
-  const authState = supabaseAuth.getAuthState();
-  const { user } = authState;
+  const { user } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [searchTerm, setSearchTerm] = useState('');

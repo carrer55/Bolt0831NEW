@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { User, Building, Phone, Briefcase, CheckCircle, Users } from 'lucide-react';
-import { supabaseAuth } from '../../lib/supabaseAuth';
-import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../hooks/useAuth';
 
 interface OnboardingProps {
   onNavigate: (view: string) => void;
@@ -9,6 +8,7 @@ interface OnboardingProps {
 }
 
 function Onboarding({ onNavigate, onComplete }: OnboardingProps) {
+  const { user, updateProfile, isLoading } = useAuth();
   const [formData, setFormData] = useState({
     fullName: '',
     companyName: '',
@@ -18,54 +18,40 @@ function Onboarding({ onNavigate, onComplete }: OnboardingProps) {
     agreeToTerms: false
   });
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  const authState = supabaseAuth.getAuthState();
-  const { user } = authState;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    setLoading(true);
 
     if (!formData.agreeToTerms) {
       setError('利用規約とプライバシーポリシーに同意してください');
-      setLoading(false);
       return;
     }
 
     if (!user) {
       setError('ユーザー情報が取得できません');
-      setLoading(false);
       return;
     }
 
     try {
-      // Supabaseのprofilesテーブルを直接更新
-      const { error: updateError } = await supabase
-        .from('profiles')
-        .update({
-          full_name: formData.fullName,
-          company: formData.companyName,
-          position: formData.position,
-          phone: formData.phone,
-          department: formData.department,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.id);
+      const result = await updateProfile({
+        full_name: formData.fullName,
+        company: formData.companyName,
+        position: formData.position,
+        phone: formData.phone,
+        department: formData.department
+      });
 
-      if (updateError) {
-        setError('プロフィールの更新に失敗しました: ' + updateError.message);
-        setLoading(false);
+      if (!result.success) {
+        setError(result.error || 'プロフィールの更新に失敗しました');
         return;
       }
 
       // 成功時の処理
-      setLoading(false);
       onComplete();
     } catch (err) {
       setError('プロフィールの更新に失敗しました');
       console.error('Profile update error:', err);
-      setLoading(false);
     }
   };
 
@@ -200,11 +186,11 @@ function Onboarding({ onNavigate, onComplete }: OnboardingProps) {
 
               <button
                 type="submit"
-                disabled={loading || !formData.agreeToTerms}
+                disabled={isLoading}
                 className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-navy-600 to-navy-800 hover:from-navy-700 hover:to-navy-900 text-white rounded-lg font-medium shadow-xl hover:shadow-2xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <CheckCircle className="w-5 h-5" />
-                <span>{loading ? '設定中...' : '設定完了'}</span>
+                <span>{isLoading ? '設定中...' : '設定完了'}</span>
               </button>
             </form>
           </div>
